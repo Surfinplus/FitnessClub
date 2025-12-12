@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FitnessApp.Models
+namespace Fitnesclubplus.Models
 {
     public class Trainer
     {

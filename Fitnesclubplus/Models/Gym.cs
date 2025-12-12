@@ -1,7 +1,7 @@
 ﻿using Fitnesclubplus.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace FitnessApp.Models
+namespace Fitnesclubplus.Models
 {
     public class Gym
     {
