@@ -1,1 +1,1 @@
-taslak ve ilk modeller eklendi
+düzeltmeler yapıldı
