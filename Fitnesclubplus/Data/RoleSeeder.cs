@@ -6,21 +6,32 @@ namespace Fitnesclubplus.Data
     {
         public static async Task SeedRolesAsync(IServiceProvider serviceProvider)
         {
-            // Rol Yöneticisini çağırıyoruz
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-            // Oluşturmak istediğimiz rollerin listesi
             string[] roleNames = { "Admin", "Member" };
 
+            // 1. Rolleri Oluştur (Eğer yoksa)
             foreach (var roleName in roleNames)
             {
-                // Rol zaten var mı diye kontrol et
                 var roleExist = await roleManager.RoleExistsAsync(roleName);
-
                 if (!roleExist)
                 {
-                    // Yoksa oluştur!
                     await roleManager.CreateAsync(new IdentityRole(roleName));
+                }
+            }
+
+            // 2. Özel Admin Kullanıcısını Bul ve Yetki Ver
+            // BURAYI GÜNCELLEDİK:
+            var adminEmail = "g221210090@sakarya.edu.tr";
+
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            if (adminUser != null)
+            {
+                // Eğer kullanıcı bulunduysa ve Admin değilse, Admin yap.
+                if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
                 }
             }
         }
