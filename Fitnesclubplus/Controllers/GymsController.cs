@@ -2,16 +2,13 @@ using Fitnesclubplus.Data;
 using Fitnesclubplus.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fitnesclubplus.Controllers
 {
-    [Authorize(Roles = "Admin")]
     public class GymsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -46,28 +43,59 @@ namespace Fitnesclubplus.Controllers
         }
 
         // GET: Gyms/Create
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         // POST: Gyms/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,OpeningHours")] Gym gym)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create([Bind("Id,Name,Address,Description")] Gym gym, string acilisSaati, string kapanisSaati)
         {
+            // 1. SAAT BÝRLEÞTÝRME
+            if (!string.IsNullOrEmpty(acilisSaati) && !string.IsNullOrEmpty(kapanisSaati))
+            {
+                gym.OpeningHours = $"{acilisSaati} - {kapanisSaati}";
+            }
+            else
+            {
+                gym.OpeningHours = "Belirtilmedi";
+            }
+
+            // 2. HATALARI SÝL (ÇÖZÜM BURADA)
+            // Bu satýrlar veritabaný iliþkilerinden kaynaklanan "Zorunlu Alan" hatalarýný kaldýrýr.
+            ModelState.Remove("OpeningHours");
+            ModelState.Remove("Description");
+            ModelState.Remove("Services");      // <--- EKLENDÝ
+            ModelState.Remove("Appointments");  // <--- EKLENDÝ
+
+            // 3. KAYIT ÝÞLEMÝ
             if (ModelState.IsValid)
             {
                 _context.Add(gym);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            // --- HATA OLURSA KONSOLA YAZ ---
+            Debug.WriteLine("---------------- HATA RAPORU ----------------");
+            foreach (var item in ModelState)
+            {
+                foreach (var error in item.Value.Errors)
+                {
+                    Debug.WriteLine($"ALAN: {item.Key} - HATA: {error.ErrorMessage}");
+                }
+            }
+            Debug.WriteLine("---------------------------------------------");
+
             return View(gym);
         }
 
         // GET: Gyms/Edit/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,16 +112,19 @@ namespace Fitnesclubplus.Controllers
         }
 
         // POST: Gyms/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,OpeningHours")] Gym gym)
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Address,OpeningHours,Description")] Gym gym)
         {
             if (id != gym.Id)
             {
                 return NotFound();
             }
+
+            // Edit iþlemi sýrasýnda da bu hatalarý almamak için buraya da ekledik:
+            ModelState.Remove("Services");      // <--- EKLENDÝ
+            ModelState.Remove("Appointments");  // <--- EKLENDÝ
 
             if (ModelState.IsValid)
             {
@@ -119,6 +150,7 @@ namespace Fitnesclubplus.Controllers
         }
 
         // GET: Gyms/Delete/5
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -139,6 +171,7 @@ namespace Fitnesclubplus.Controllers
         // POST: Gyms/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var gym = await _context.Gyms.FindAsync(id);
