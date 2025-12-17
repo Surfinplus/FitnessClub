@@ -4,6 +4,7 @@ using Fitnesclubplus.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fitnesclubplus.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251217203156_AddImageToGym")]
+    partial class AddImageToGym
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,10 +74,6 @@ namespace Fitnesclubplus.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DurationMinutes")
                         .HasColumnType("int");
@@ -337,7 +336,7 @@ namespace Fitnesclubplus.Migrations
             modelBuilder.Entity("Fitnesclubplus.Models.Trainer", b =>
                 {
                     b.HasOne("Fitnesclubplus.Models.Service", "Service")
-                        .WithMany()
+                        .WithMany("Trainers")
                         .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -399,6 +398,11 @@ namespace Fitnesclubplus.Migrations
             modelBuilder.Entity("Fitnesclubplus.Models.Gym", b =>
                 {
                     b.Navigation("Services");
+                });
+
+            modelBuilder.Entity("Fitnesclubplus.Models.Service", b =>
+                {
+                    b.Navigation("Trainers");
                 });
 #pragma warning restore 612, 618
         }
