@@ -8,17 +8,17 @@ namespace Fitnesclubplus.Models
         [Key]
         public int Id { get; set; }
 
-        // Eski sayfaların hata vermemesi için 'Name' yerine 'ServiceName' kullanıyoruz
+        // Hata listesindeki 'ServiceName' beklentisi için:
         [Required(ErrorMessage = "Hizmet adı zorunludur.")]
         [Display(Name = "Hizmet Adı")]
         public string ServiceName { get; set; }
 
-        // Hata listesindeki 'Price' beklentisi için eklendi
+        // Hata listesindeki 'Price' beklentisi için:
         [Required(ErrorMessage = "Fiyat zorunludur.")]
         [Display(Name = "Ücret (TL)")]
         public decimal Price { get; set; }
 
-        // Hata listesindeki 'DurationMinutes' beklentisi için eklendi
+        // Hata listesindeki 'DurationMinutes' beklentisi için:
         [Required(ErrorMessage = "Süre zorunludur.")]
         [Display(Name = "Süre (Dakika)")]
         public int DurationMinutes { get; set; }
@@ -26,7 +26,7 @@ namespace Fitnesclubplus.Models
         [Display(Name = "Açıklama")]
         public string Description { get; set; }
 
-        // --- İLİŞKİ AYARLARI ---
+        // --- Gym İlişkisi ---
         [Display(Name = "Spor Salonu")]
         public int GymId { get; set; }
 
