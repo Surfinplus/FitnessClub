@@ -1,7 +1,7 @@
 ﻿using Fitnesclubplus.Models;
-using Microsoft.AspNetCore.Http; // IFormFile için gerekli
+using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema; // [NotMapped] için gerekli
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Fitnesclubplus.Models
 {
@@ -9,7 +9,9 @@ namespace Fitnesclubplus.Models
     {
         public Gym()
         {
+            // Listeleri boş olarak başlatıyoruz ki hata almayalım
             Services = new HashSet<Service>();
+            Trainers = new HashSet<Trainer>();
         }
 
         [Key]
@@ -26,21 +28,19 @@ namespace Fitnesclubplus.Models
         [Display(Name = "Çalışma Saatleri")]
         public string OpeningHours { get; set; }
 
-        // --- YENİ EKLENEN KISIMLAR ---
-
-        // 1. Veritabanına Kaydedilecek Dosya Adı
-        // Örnek: "salon_123.jpg"
+        // --- RESİM İŞLEMLERİ ---
         [Display(Name = "Salon Resmi")]
         public string? ImageName { get; set; }
 
-        // 2. Formdan Dosya Yüklemek İçin Yardımcı Özellik
-        // [NotMapped] : Bu özellik veritabanında bir kolon oluşturmaz, sadece dosya transferi içindir.
         [NotMapped]
         [Display(Name = "Resim Yükle")]
         public IFormFile? ImageUpload { get; set; }
+        // -----------------------
 
-        // -----------------------------
-
+        // İLİŞKİLER
         public virtual ICollection<Service> Services { get; set; }
+
+        // YENİ: Bu salondaki personeller
+        public virtual ICollection<Trainer> Trainers { get; set; }
     }
 }

@@ -1,0 +1,54 @@
+﻿@model Fitnesclubplus.Models.TrainerAvailability
+
+@{
+    ViewData["Title"] = "Saat Ekle";
+}
+
+<h1>Çalışma Saati Ekle</h1>
+<h3>Eğitmen: <span class="text-primary">@ViewBag.TrainerName</span></h3>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <input type="hidden" asp-for="TrainerId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DayOfWeek" class="control-label">Gün</label>
+                <select asp-for="DayOfWeek" class="form-control">
+                    <option value="1">Pazartesi</option>
+                    <option value="2">Salı</option>
+                    <option value="3">Çarşamba</option>
+                    <option value="4">Perşembe</option>
+                    <option value="5">Cuma</option>
+                    <option value="6">Cumartesi</option>
+                    <option value="0">Pazar</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="StartTime" class="control-label">Başlangıç</label>
+                <input asp-for="StartTime" type="time" class="form-control" />
+                <span asp-validation-for="StartTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="EndTime" class="control-label">Bitiş</label>
+                <input asp-for="EndTime" type="time" class="form-control" />
+                <span asp-validation-for="EndTime" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Ekle" class="btn btn-success" />
+                <a asp-action="Index" asp-route-trainerId="@Model.TrainerId" class="btn btn-secondary">Listeye Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

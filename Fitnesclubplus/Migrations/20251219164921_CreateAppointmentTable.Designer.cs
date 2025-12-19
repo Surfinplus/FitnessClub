@@ -4,6 +4,7 @@ using Fitnesclubplus.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fitnesclubplus.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251219164921_CreateAppointmentTable")]
+    partial class CreateAppointmentTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,38 +104,15 @@ namespace Fitnesclubplus.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("ServiceCategoryId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("GymId");
-
-                    b.HasIndex("ServiceCategoryId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("Fitnesclubplus.Models.ServiceCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
+                    b.Property<string>("ServiceName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("ServiceCategories");
+                    b.HasIndex("GymId");
+
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("Fitnesclubplus.Models.Trainer", b =>
@@ -147,11 +127,11 @@ namespace Fitnesclubplus.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("GymId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsAvailable")
+                        .HasColumnType("bit");
 
-                    b.Property<string>("ImageName")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Specialization")
                         .IsRequired()
@@ -159,36 +139,9 @@ namespace Fitnesclubplus.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GymId");
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("Trainers");
-                });
-
-            modelBuilder.Entity("Fitnesclubplus.Models.TrainerAvailability", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("DayOfWeek")
-                        .HasColumnType("int");
-
-                    b.Property<TimeSpan>("EndTime")
-                        .HasColumnType("time");
-
-                    b.Property<TimeSpan>("StartTime")
-                        .HasColumnType("time");
-
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("TrainerAvailabilities");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -408,43 +361,18 @@ namespace Fitnesclubplus.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Fitnesclubplus.Models.ServiceCategory", "ServiceCategory")
-                        .WithMany("Services")
-                        .HasForeignKey("ServiceCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Fitnesclubplus.Models.Trainer", "Trainer")
-                        .WithMany("Services")
-                        .HasForeignKey("TrainerId");
-
                     b.Navigation("Gym");
-
-                    b.Navigation("ServiceCategory");
-
-                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("Fitnesclubplus.Models.Trainer", b =>
                 {
-                    b.HasOne("Fitnesclubplus.Models.Gym", "Gym")
-                        .WithMany("Trainers")
-                        .HasForeignKey("GymId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Gym");
-                });
-
-            modelBuilder.Entity("Fitnesclubplus.Models.TrainerAvailability", b =>
-                {
-                    b.HasOne("Fitnesclubplus.Models.Trainer", "Trainer")
+                    b.HasOne("Fitnesclubplus.Models.Service", "Service")
                         .WithMany()
-                        .HasForeignKey("TrainerId")
+                        .HasForeignKey("ServiceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Trainer");
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -499,18 +427,6 @@ namespace Fitnesclubplus.Migrations
                 });
 
             modelBuilder.Entity("Fitnesclubplus.Models.Gym", b =>
-                {
-                    b.Navigation("Services");
-
-                    b.Navigation("Trainers");
-                });
-
-            modelBuilder.Entity("Fitnesclubplus.Models.ServiceCategory", b =>
-                {
-                    b.Navigation("Services");
-                });
-
-            modelBuilder.Entity("Fitnesclubplus.Models.Trainer", b =>
                 {
                     b.Navigation("Services");
                 });

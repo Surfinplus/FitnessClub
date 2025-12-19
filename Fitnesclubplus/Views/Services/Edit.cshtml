@@ -1,49 +1,59 @@
-@model Fitnesclubplus.Models.Service
+﻿@model Fitnesclubplus.Models.Service
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Hizmeti Düzenle";
 }
 
-<h1>Edit</h1>
+<h1>Hizmeti Düzenle</h1>
 
-<h4>Service</h4>
-<hr />
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-6">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="ServiceName" class="control-label"></label>
-                <input asp-for="ServiceName" class="form-control" />
-                <span asp-validation-for="ServiceName" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="GymId" class="control-label">Salon</label>
+                <select asp-for="GymId" class="form-control" asp-items="ViewBag.GymId"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="DurationMinutes" class="control-label"></label>
-                <input asp-for="DurationMinutes" class="form-control" />
-                <span asp-validation-for="DurationMinutes" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="ServiceCategoryId" class="control-label">Hizmet Kategorisi</label>
+                <select asp-for="ServiceCategoryId" class="form-control" asp-items="ViewBag.ServiceCategoryId"></select>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mb-3">
+                <label asp-for="TrainerId" class="control-label">Eğitmen</label>
+                <select asp-for="TrainerId" class="form-control" asp-items="ViewBag.TrainerId">
+                    <option value="">-- Eğitmen Yok --</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
                 <label asp-for="Price" class="control-label"></label>
                 <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="GymId" class="control-label"></label>
-                <select asp-for="GymId" class="form-control" asp-items="ViewBag.GymId"></select>
-                <span asp-validation-for="GymId" class="text-danger"></span>
+
+            <div class="form-group mb-3">
+                <label asp-for="DurationMinutes" class="control-label"></label>
+                <input asp-for="DurationMinutes" class="form-control" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
