@@ -1,0 +1,96 @@
+﻿@using Fitnesclubplus.Models
+@model Fitnesclubplus.Models.Appointment
+
+@{
+    ViewData["Title"] = "Yeni Randevu Oluştur";
+}
+
+<h1>Yeni Randevu Oluştur</h1>
+
+<h4>Randevu Bilgileri</h4>
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ServiceId" class="control-label fw-bold">Hizmet Seçiniz</label>
+                <select asp-for="ServiceId" class="form-control" asp-items="ViewBag.ServiceId">
+                    <option value="">-- Lütfen Seçiniz --</option>
+                </select>
+            </div>
+
+            <div class="card bg-light mb-3 p-3" id="infoCard" style="display:none;">
+                <h6 class="text-primary fw-bold">Hizmet Detayları</h6>
+                <div class="row">
+                    <div class="col-md-12 mb-2">
+                        <label class="small text-muted">Eğitmen:</label>
+                        <input type="text" id="trainerNameDisplay" class="form-control form-control-sm" readonly />
+                        <input type="hidden" asp-for="TrainerId" id="TrainerId" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small text-muted">Ücret:</label>
+                        <input type="text" id="priceDisplay" class="form-control form-control-sm" readonly />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="small text-muted">Süre (Dk):</label>
+                        <input type="text" id="durationDisplay" class="form-control form-control-sm" readonly />
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="AppointmentDate" class="control-label fw-bold">Tarih ve Saat Seçiniz</label>
+                <input asp-for="AppointmentDate" class="form-control" type="datetime-local" />
+                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-4">
+                <input type="submit" value="Randevu Talebi Oluştur" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        $(document).ready(function () {
+            // Hizmet dropdown'ı değiştiğinde çalışır
+            $('#ServiceId').change(function () {
+                var serviceId = $(this).val();
+
+                if (serviceId) {
+                    $.ajax({
+                        url: '/Appointments/GetServiceDetails', // Controller'daki metoda git
+                        type: 'GET',
+                        data: { serviceId: serviceId },
+                        success: function (data) {
+                            if (data) {
+                                // Bilgileri doldur
+                                $('#trainerNameDisplay').val(data.trainerName);
+                                $('#TrainerId').val(data.trainerId); // Gizli inputa ID'yi yaz
+                                $('#priceDisplay').val(data.price + ' TL');
+                                $('#durationDisplay').val(data.duration);
+
+                                // Kartı göster
+                                $('#infoCard').slideDown();
+                            }
+                        }
+                    });
+                } else {
+                    // Seçim yoksa kartı gizle ve temizle
+                    $('#infoCard').slideUp();
+                    $('#trainerNameDisplay').val('');
+                    $('#TrainerId').val('');
+                    $('#priceDisplay').val('');
+                }
+            });
+        });
+    </script>
+}

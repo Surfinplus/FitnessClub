@@ -4,6 +4,7 @@ using Fitnesclubplus.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fitnesclubplus.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251219192936_AddTrainerAvailability")]
+    partial class AddTrainerAvailability
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -42,19 +45,12 @@ namespace Fitnesclubplus.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("TrainerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Appointments");
                 });
@@ -179,14 +175,11 @@ namespace Fitnesclubplus.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
-
-                    b.Property<bool>("IsGeneral")
-                        .HasColumnType("bit");
 
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
@@ -407,21 +400,7 @@ namespace Fitnesclubplus.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Fitnesclubplus.Models.Trainer", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
                     b.Navigation("Service");
-
-                    b.Navigation("Trainer");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Fitnesclubplus.Models.Service", b =>

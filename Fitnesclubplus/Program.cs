@@ -2,24 +2,28 @@ using Fitnesclubplus;
 using Fitnesclubplus.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.UI.Services; // EmailSender arayüzü için
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Veritabanı Bağlantısı
+// =========================================================
+// 1. VERİTABANI BAĞLANTISI
+// =========================================================
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// 2. Identity (Üyelik ve Rol) Ayarları
-// DİKKAT: Burası tek ve yetkili Identity ayarıdır. Başka bir AddDefaultIdentity satırı olmamalı.
+// =========================================================
+// 2. IDENTITY (ÜYELİK) AYARLARI
+// =========================================================
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     // Giriş Ayarları
-    options.SignIn.RequireConfirmedAccount = false; // Mail onayı zorunluluğunu kaldırdık (Test için)
+    options.SignIn.RequireConfirmedAccount = false; // Test için mail onayı kapalı
 
-    // Şifre Kuralları (Test için basitleştirdik, istersen değiştirebilirsin)
+    // Şifre Kuralları (Senin belirlediğin basit kurallar)
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireNonAlphanumeric = false;
@@ -29,7 +33,7 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 .AddEntityFrameworkStores<ApplicationDbContext>()
 .AddDefaultTokenProviders();
 
-// Giriş yapılmamışsa yönlendirilecek sayfalar (Login yolunu gösteriyoruz)
+// Giriş yapılmamışsa yönlendirilecek sayfalar
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = "/Identity/Account/Login";
@@ -37,12 +41,20 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 });
 
-// 3. MVC ve Razor Pages Servisleri
+// =========================================================
+// 3. MVC, RAZOR PAGES VE MAİL SERVİSİ
+// =========================================================
 builder.Services.AddControllersWithViews();
-builder.Services.AddRazorPages(); // Scaffolding ile eklenen Identity sayfaları için ŞART
-// Mail servisi hatasını çözmek için eklediğimiz satır:
-builder.Services.AddSingleton<Microsoft.AspNetCore.Identity.UI.Services.IEmailSender, EmailSender>();
+builder.Services.AddRazorPages();
+
+// EmailSender hatasını önlemek için dummy servis
+builder.Services.AddSingleton<IEmailSender, EmailSender>();
+
 var app = builder.Build();
+
+// =========================================================
+// 4. HTTP REQUEST PIPELINE (UYGULAMA AKIŞI)
+// =========================================================
 
 // Hata Yönetimi
 if (!app.Environment.IsDevelopment())
@@ -56,7 +68,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// Önce Kimlik Doğrulama, Sonra Yetkilendirme (Sıralama Önemli)
+// Önce Kimlik Doğrulama (Authentication), Sonra Yetkilendirme (Authorization)
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -65,25 +77,28 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapRazorPages(); // Identity sayfalarının (Login/Register) çalışması için
+app.MapRazorPages(); // Identity sayfaları için gerekli
 
-// --- ROLLERİ OTOMATİK OLUŞTURMA VE ADMİN ATAMA BLOĞU ---
+// =========================================================
+// 5. OTOMATİK ROL VE YETKİLENDİRME BLOĞU
+// =========================================================
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     try
     {
-        // RoleSeeder sınıfını çalıştırıyoruz
+        // RoleSeeder sınıfındaki SeedRolesAsync metodunu çağırıyoruz.
+        // Bu metot:
+        // 1. "Admin" rolü yoksa oluşturur.
+        // 2. "g221210090@sakarya.edu.tr" kullanıcısını bulursa ona "Admin" yetkisi verir.
         await RoleSeeder.SeedRolesAsync(services);
     }
     catch (Exception ex)
     {
-        // Hata olursa konsola yaz ama siteyi durdurma
         Console.WriteLine("---------------------------------------------");
-        Console.WriteLine("DİKKAT - Rol/Admin Oluşturma Hatası: " + ex.Message);
+        Console.WriteLine("DİKKAT - Rol Atama Hatası: " + ex.Message);
         Console.WriteLine("---------------------------------------------");
     }
 }
-// --------------------------------------------------------
 
 app.Run();
