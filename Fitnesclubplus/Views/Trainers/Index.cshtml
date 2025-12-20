@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Fitnesclubplus.Models.Trainer>
+@{
+    ViewData["Title"] = "Personeller";
+}
+
+<h1>Personel Listesi</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Personel Ekle</a>
+</p>
+
+<table class="table table-hover align-middle">
+    <thead>
+        <tr>
+            <th>Resim</th>
+            <th>Ad Soyad</th>
+            <th>Uzmanlık</th>
+            <th>Salon</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageName))
+                    {
+                        <img src="~/images/@item.ImageName" width="50" height="50" style="object-fit:cover; border-radius:50%;" />
+                    }
+                    else
+                    {
+                        <span class="text-muted">Resim Yok</span>
+                    }
+                </td>
+                <td class="fw-bold">@Html.DisplayFor(modelItem => item.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Specialization)</td>
+                <td>@Html.DisplayFor(modelItem => item.Gym.Name)</td>
+                <td>
+                    <a asp-controller="TrainerAvailabilities" asp-action="Index" asp-route-trainerId="@item.Id" class="btn btn-sm btn-dark" title="Çalışma Saatlerini Yönet">
+                        🕒 Çalışma Saatleri
+                    </a>
+
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detay</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table> 

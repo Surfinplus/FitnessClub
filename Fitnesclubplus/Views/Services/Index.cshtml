@@ -1,0 +1,46 @@
+﻿@model IEnumerable<Fitnesclubplus.Models.Service>
+@{
+    ViewData["Title"] = "Hizmetler";
+}
+
+<h1>Mevcut Hizmetler</h1>
+<p><a asp-action="Create" class="btn btn-primary">Yeni Hizmet Tanımla</a></p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Kategori</th>
+            <th>Eğitmen</th>
+            <th>Salon</th>
+            <th>Ücret</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.ServiceCategory.Name)</td>
+
+                <td>
+                    @if (item.Trainer != null)
+                    {
+                        @item.Trainer.FullName
+                    }
+                    else
+                    {
+
+                        <span class="text-muted">-</span>
+                    }
+                </td>
+
+                <td>@Html.DisplayFor(modelItem => item.Gym.Name)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price) ₺</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm">Detay</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

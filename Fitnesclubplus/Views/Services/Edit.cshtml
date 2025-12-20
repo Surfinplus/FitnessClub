@@ -1,0 +1,59 @@
+﻿@model Fitnesclubplus.Models.Service
+
+@{
+    ViewData["Title"] = "Hizmeti Düzenle";
+}
+
+<h1>Hizmeti Düzenle</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group mb-3">
+                <label asp-for="GymId" class="control-label">Salon</label>
+                <select asp-for="GymId" class="form-control" asp-items="ViewBag.GymId"></select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="ServiceCategoryId" class="control-label">Hizmet Kategorisi</label>
+                <select asp-for="ServiceCategoryId" class="form-control" asp-items="ViewBag.ServiceCategoryId"></select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="TrainerId" class="control-label">Eğitmen</label>
+                <select asp-for="TrainerId" class="form-control" asp-items="ViewBag.TrainerId">
+                    <option value="">-- Eğitmen Yok --</option>
+                </select>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="DurationMinutes" class="control-label"></label>
+                <input asp-for="DurationMinutes" class="form-control" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Kaydet" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Listeye Dön</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

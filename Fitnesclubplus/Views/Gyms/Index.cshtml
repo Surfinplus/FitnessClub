@@ -1,0 +1,61 @@
+@model IEnumerable<Fitnesclubplus.Models.Gym>
+
+@{
+    ViewData["Title"] = "Salonlarýmýz";
+}
+
+<div class="text-center mb-5">
+    <h1 class="display-5 fw-bold text-dark">Spor Salonlarýmýz</h1>
+    <p class="text-muted lead">Size en yakýn lokasyonu seçin, spora hemen baþlayýn.</p>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a asp-action="Create" class="btn btn-success mt-2"> <i class="bi bi-plus-circle"></i> Yeni Salon Ekle (Admin)</a>
+    }
+</div>
+
+<div class="row row-cols-1 row-cols-md-3 g-4">
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm border-0">
+
+                <div style="height: 220px; overflow: hidden; background-color: #f0f0f0;">
+                    @if (!string.IsNullOrEmpty(item.ImageName))
+                    {
+                        <img src="~/images/@item.ImageName" class="card-img-top" alt="@item.Name" style="object-fit: cover; height: 100%; width: 100%;">
+                    }
+                    else
+                    {
+                        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=1470&auto=format&fit=crop"
+                             class="card-img-top" alt="Varsayýlan Resim" style="object-fit: cover; height: 100%; width: 100%;">
+                    }
+                </div>
+
+                <div class="card-body">
+                    <h4 class="card-title fw-bold text-primary">@item.Name</h4>
+                    <p class="card-text text-muted mb-1">
+                        <i class="bi bi-geo-alt-fill text-danger"></i> @item.Address
+                    </p>
+                    <p class="card-text text-muted small">
+                        <i class="bi bi-clock"></i> @(item.OpeningHours ?? "Belirtilmemiþ")
+                    </p>
+                </div>
+
+                <div class="card-footer bg-white border-0 text-center pb-4">
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary w-100 rounded-pill mb-2">
+                        Detaylarý Ýncele
+                    </a>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <div class="btn-group w-100" role="group">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Sil</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
