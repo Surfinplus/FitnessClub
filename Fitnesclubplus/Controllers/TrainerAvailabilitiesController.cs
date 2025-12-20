@@ -17,17 +17,12 @@ namespace Fitnesclubplus.Controllers
             _context = context;
         }
 
-<<<<<<< HEAD
         // 1. LİSTELEME
-=======
-        // 1. Belirli bir hocanın çalışma saatlerini listele
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
         public async Task<IActionResult> Index(int? trainerId)
         {
             if (trainerId == null) return RedirectToAction("Index", "Trainers");
 
             ViewBag.TrainerId = trainerId;
-<<<<<<< HEAD
             var trainer = await _context.Trainers.FindAsync(trainerId);
             ViewBag.TrainerName = trainer?.FullName;
 
@@ -38,27 +33,11 @@ namespace Fitnesclubplus.Controllers
                 .OrderByDescending(t => t.IsGeneral) // Önce "Her Gün" olanlar görünsün
                 .ThenBy(t => t.Date)
                 .ThenBy(t => t.StartTime);
-=======
-
-            // Hocanın adını başlıkta göstermek için alalım
-            var trainer = await _context.Trainers.FindAsync(trainerId);
-            ViewBag.TrainerName = trainer?.FullName;
-
-            var availabilities = _context.TrainerAvailabilities
-                .Include(t => t.Trainer)
-                .Where(t => t.TrainerId == trainerId)
-                .OrderBy(t => t.DayOfWeek) // Gün sırasına göre dizelim
-                .ThenBy(t => t.StartTime); // Saat sırasına göre
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
 
             return View(await availabilities.ToListAsync());
         }
 
-<<<<<<< HEAD
         // 2. EKLEME SAYFASI
-=======
-        // 2. Yeni Saat Ekleme Sayfası
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
         public IActionResult Create(int trainerId)
         {
             var trainer = _context.Trainers.Find(trainerId);
@@ -66,7 +45,6 @@ namespace Fitnesclubplus.Controllers
 
             ViewBag.TrainerName = trainer.FullName;
 
-<<<<<<< HEAD
             var model = new TrainerAvailability
             {
                 TrainerId = trainerId,
@@ -105,25 +83,6 @@ namespace Fitnesclubplus.Controllers
                 trainerAvailability.Date = null;
             }
 
-=======
-            // Modeli hazırlayıp gönderiyoruz ki TrainerId kaybolmasın
-            var model = new TrainerAvailability { TrainerId = trainerId };
-            return View(model);
-        }
-
-        // 3. Kaydetme İşlemi
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,TrainerId,DayOfWeek,StartTime,EndTime")] TrainerAvailability trainerAvailability)
-        {
-            // Basit bir validasyon: Başlangıç saati Bitişten büyük olamaz
-            if (trainerAvailability.StartTime >= trainerAvailability.EndTime)
-            {
-                ModelState.AddModelError("", "Başlangıç saati, bitiş saatinden önce olmalıdır.");
-            }
-
-            // Model validasyonu (Navigation property'leri yoksay)
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
             ModelState.Remove("Trainer");
 
             if (ModelState.IsValid)
@@ -133,20 +92,12 @@ namespace Fitnesclubplus.Controllers
                 return RedirectToAction(nameof(Index), new { trainerId = trainerAvailability.TrainerId });
             }
 
-<<<<<<< HEAD
-=======
-            // Hata varsa tekrar aynı sayfaya dön
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
             var trainer = _context.Trainers.Find(trainerAvailability.TrainerId);
             ViewBag.TrainerName = trainer?.FullName;
             return View(trainerAvailability);
         }
 
-<<<<<<< HEAD
         // 4. SİLME İŞLEMİ
-=======
-        // 4. Silme İşlemi
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
