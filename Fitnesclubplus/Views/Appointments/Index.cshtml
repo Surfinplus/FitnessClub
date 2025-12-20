@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -25,6 +26,21 @@
             {
                 <th>Müşteri</th>
             }
+=======
+﻿@model IEnumerable<Fitnesclubplus.Models.Appointment>
+@{
+    ViewData["Title"] = "Randevular";
+}
+
+<h1>Randevular</h1>
+<p><a asp-action="Create" class="btn btn-primary">Yeni Randevu</a></p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Tarih</th>
+            <th>Hizmet</th>
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
             <th>Durum</th>
             <th>İşlemler</th>
         </tr>
@@ -33,10 +49,14 @@
         @foreach (var item in Model)
         {
             <tr>
+<<<<<<< HEAD
                 <td>
                     @item.AppointmentDate.ToString("dd.MM.yyyy") <br />
                     <small class="text-muted">@item.AppointmentDate.ToString("HH:mm")</small>
                 </td>
+=======
+                <td>@item.AppointmentDate</td>
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
 
                 <td>
                     @if (item.Service != null && item.Service.ServiceCategory != null)
@@ -45,6 +65,7 @@
                     }
                 </td>
 
+<<<<<<< HEAD
                 <td>
                     @(item.Trainer != null ? item.Trainer.FullName : "-")
                 </td>
@@ -81,6 +102,11 @@
                     }
 
                     <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm" onclick="return confirm('Silmek istediğine emin misin?');">Sil</a>
+=======
+                <td>@item.Status</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Sil</a>
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
                 </td>
             </tr>
         }

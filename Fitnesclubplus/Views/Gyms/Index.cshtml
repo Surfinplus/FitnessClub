@@ -1,6 +1,7 @@
 @model IEnumerable<Fitnesclubplus.Models.Gym>
 
 @{
+<<<<<<< HEAD
     ViewData["Title"] = "Salonlarýmýz";
 }
 
@@ -59,3 +60,64 @@
         </div>
     }
 </div>
+=======
+    ViewData["Title"] = "Spor Salonlarý";
+}
+
+<h1>Spor Salonlarý</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Oluþtur</a>
+</p>
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Resim</th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.OpeningHours)
+            </th>
+            <th>Ýþlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.ImageName))
+                    {
+                        // Resmi wwwroot/images klasöründen çeker
+                        <img src="~/images/@item.ImageName" width="100" height="75" style="object-fit:cover; border-radius:5px;" />
+                    }
+                    else
+                    {
+                        <span>Resim Yok</span>
+                    }
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OpeningHours)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Düzenle</a>
+                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Detay</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Sil</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138

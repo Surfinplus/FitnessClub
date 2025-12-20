@@ -18,9 +18,14 @@ namespace Fitnesclubplus.Data
         public DbSet<TrainerAvailability> TrainerAvailabilities { get; set; }
         public DbSet<ServiceCategory> ServiceCategories { get; set; }
 
+        public DbSet<TrainerAvailability> TrainerAvailabilities { get; set; }
+        // YENİ EKLENEN TABLO
+        public DbSet<ServiceCategory> ServiceCategories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+<<<<<<< HEAD
 
             // --- HATA ÇÖZEN KOD BLOĞU BAŞLANGICI ---
             // Bu ayar, "Multiple cascade paths" hatasını engeller.
@@ -31,6 +36,8 @@ namespace Fitnesclubplus.Data
                 .HasForeignKey(a => a.TrainerId)
                 .OnDelete(DeleteBehavior.Restrict);
             // --- HATA ÇÖZEN KOD BLOĞU BİTİŞİ ---
+=======
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
         }
     }
 }

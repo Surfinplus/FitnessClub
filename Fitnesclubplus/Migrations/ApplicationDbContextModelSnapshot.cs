@@ -42,20 +42,28 @@ namespace Fitnesclubplus.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
+<<<<<<< HEAD
                     b.Property<int>("TrainerId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+=======
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
 
                     b.HasKey("Id");
 
                     b.HasIndex("ServiceId");
 
+<<<<<<< HEAD
                     b.HasIndex("TrainerId");
 
                     b.HasIndex("UserId");
 
+=======
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
                     b.ToTable("Appointments");
                 });
 
@@ -179,15 +187,23 @@ namespace Fitnesclubplus.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+<<<<<<< HEAD
                     b.Property<DateTime?>("Date")
                         .HasColumnType("datetime2");
+=======
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
 
                     b.Property<TimeSpan>("EndTime")
                         .HasColumnType("time");
 
+<<<<<<< HEAD
                     b.Property<bool>("IsGeneral")
                         .HasColumnType("bit");
 
+=======
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
                     b.Property<TimeSpan>("StartTime")
                         .HasColumnType("time");
 
@@ -400,6 +416,7 @@ namespace Fitnesclubplus.Migrations
                 });
 
             modelBuilder.Entity("Fitnesclubplus.Models.Appointment", b =>
+<<<<<<< HEAD
                 {
                     b.HasOne("Fitnesclubplus.Models.Service", "Service")
                         .WithMany()
@@ -422,6 +439,55 @@ namespace Fitnesclubplus.Migrations
                     b.Navigation("Trainer");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Fitnesclubplus.Models.Service", b =>
+                {
+                    b.HasOne("Fitnesclubplus.Models.Gym", "Gym")
+                        .WithMany("Services")
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fitnesclubplus.Models.ServiceCategory", "ServiceCategory")
+                        .WithMany("Services")
+                        .HasForeignKey("ServiceCategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Fitnesclubplus.Models.Trainer", "Trainer")
+                        .WithMany("Services")
+                        .HasForeignKey("TrainerId");
+
+                    b.Navigation("Gym");
+
+                    b.Navigation("ServiceCategory");
+
+                    b.Navigation("Trainer");
+                });
+
+            modelBuilder.Entity("Fitnesclubplus.Models.Trainer", b =>
+=======
+>>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
+                {
+                    b.HasOne("Fitnesclubplus.Models.Gym", "Gym")
+                        .WithMany("Trainers")
+                        .HasForeignKey("GymId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Gym");
+                });
+
+            modelBuilder.Entity("Fitnesclubplus.Models.TrainerAvailability", b =>
+                {
+                    b.HasOne("Fitnesclubplus.Models.Trainer", "Trainer")
+                        .WithMany()
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("Fitnesclubplus.Models.Service", b =>
