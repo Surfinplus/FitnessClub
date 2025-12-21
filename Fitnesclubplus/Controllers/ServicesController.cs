@@ -166,7 +166,7 @@ namespace Fitnesclubplus.Controllers
             return _context.Services.Any(e => e.Id == id);
         }
 
-        // --- YENÝ EKLENEN AJAX METODU ---
+        
         // Bu metod, View tarafýndaki JavaScript tarafýndan çaðrýlýr.
         // Seçilen Salon ID'sine göre o salondaki eðitmenleri JSON olarak döndürür.
         [HttpGet]

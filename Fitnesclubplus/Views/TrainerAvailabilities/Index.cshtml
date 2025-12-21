@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Fitnesclubplus.Models.TrainerAvailability>
 
 @{
-<<<<<<< HEAD
     ViewData["Title"] = "Çalışma Takvimi";
 }
 
@@ -18,39 +17,6 @@
             <th>Durum / Tarih</th>
             <th>Gün</th>
             <th>Saat Aralığı</th>
-=======
-    ViewData["Title"] = "Çalışma Saatleri";
-    // Gün isimlerini Türkçeleştirmek için basit bir helper
-    string GunAdi(DayOfWeek day)
-    {
-        switch (day)
-        {
-            case DayOfWeek.Monday: return "Pazartesi";
-            case DayOfWeek.Tuesday: return "Salı";
-            case DayOfWeek.Wednesday: return "Çarşamba";
-            case DayOfWeek.Thursday: return "Perşembe";
-            case DayOfWeek.Friday: return "Cuma";
-            case DayOfWeek.Saturday: return "Cumartesi";
-            case DayOfWeek.Sunday: return "Pazar";
-            default: return day.ToString();
-        }
-    }
-}
-
-<h1>Çalışma Saatleri: <span class="text-primary">@ViewBag.TrainerName</span></h1>
-
-<p>
-    <a asp-action="Create" asp-route-trainerId="@ViewBag.TrainerId" class="btn btn-primary">Yeni Saat Ekle</a>
-    <a asp-controller="Trainers" asp-action="Index" class="btn btn-secondary">Personel Listesine Dön</a>
-</p>
-
-<table class="table table-bordered table-striped">
-    <thead class="table-dark">
-        <tr>
-            <th>Gün</th>
-            <th>Başlangıç</th>
-            <th>Bitiş</th>
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
             <th>İşlem</th>
         </tr>
     </thead>
@@ -58,18 +24,13 @@
         @if (!Model.Any())
         {
             <tr>
-<<<<<<< HEAD
                 <td colspan="4" class="text-center text-muted p-4">Kayıt bulunamadı.</td>
-=======
-                <td colspan="4" class="text-center text-muted">Henüz çalışma saati eklenmemiş.</td>
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
             </tr>
         }
         else
         {
             @foreach (var item in Model)
             {
-<<<<<<< HEAD
                 // Eğer "Her Gün" ise satırı yeşilimsi yapalım
                 <tr class="@(item.IsGeneral ? "table-success" : "")">
 
@@ -102,14 +63,6 @@
 
                     <td>
                         <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğine emin misiniz?');">Sil</a>
-=======
-                <tr>
-                    <td class="fw-bold">@GunAdi(item.DayOfWeek)</td>
-                    <td>@item.StartTime.ToString(@"hh\:mm")</td>
-                    <td>@item.EndTime.ToString(@"hh\:mm")</td>
-                    <td>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger" onclick="return confirm('Silmek istediğine emin misin?');">Sil</a>
->>>>>>> ced9dad4428e227e9f010d3675992cbbe43be138
                     </td>
                 </tr>
             }
