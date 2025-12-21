@@ -2,8 +2,6 @@
 🏋️‍♂️ FitnessClubPlus - AI Destekli Kişisel Antrenör
 FitnessClubPlus, yapay zeka gücünü kullanarak kullanıcılara tamamen kişiselleştirilmiş beslenme ve antrenman programları hazırlayan, aynı zamanda hedeflenen vücut formunu görselleştiren modern bir ASP.NET Core MVC uygulamasıdır.
 
-(Buraya projenin çalışır haldeki bir ekran görüntüsünü ekleyebilirsin)
-
 🌟 Özellikler
 🧠 Akıllı Program Oluşturma: Kullanıcının yaşı, kilosu, boyu ve hedeflerine göre Google Gemini 2.5 Flash modeli kullanılarak detaylı beslenme ve egzersiz planı oluşturulur.
 
