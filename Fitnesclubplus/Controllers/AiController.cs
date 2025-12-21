@@ -12,6 +12,10 @@ namespace Fitnesclubplus.Controllers
         public AiController()
         {
             _httpClient = new HttpClient();
+<<<<<<< HEAD
+=======
+            // Hem Gemini hem de kendi bilgisayarındaki yapay zeka çalışacağı için süreyi uzun tutalım.
+>>>>>>> b404bda370f8193262e5be29c3c2603c5c8ad51b
             _httpClient.Timeout = TimeSpan.FromSeconds(180);
         }
 
@@ -21,16 +25,26 @@ namespace Fitnesclubplus.Controllers
             // --- AYARLAR ---
             string googleApiKey = "AIzaSyCCfq3CfdPM5PYXlPcA93ub42xlJSXV89g";
 
+<<<<<<< HEAD
             
+=======
+            // DÜZELTME BURADA: Senin çalışan modelin 'gemini-2.5-flash'
+>>>>>>> b404bda370f8193262e5be29c3c2603c5c8ad51b
             string geminiModel = "gemini-2.5-flash";
 
             // Stability Matrix Adresi (Localhost)
             string localSdUrl = "http://127.0.0.1:7860/sdapi/v1/txt2img";
 
 
+<<<<<<< HEAD
             
             // ADIM 1: GOOGLE GEMINI İLE METİN PLANI OLUŞTURMA
             
+=======
+            // ==================================================================================
+            // ADIM 1: GOOGLE GEMINI İLE METİN PLANI OLUŞTURMA
+            // ==================================================================================
+>>>>>>> b404bda370f8193262e5be29c3c2603c5c8ad51b
             string geminiUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{geminiModel}:generateContent?key={googleApiKey}";
 
             string base64ImageForGemini = "";
@@ -70,7 +84,11 @@ namespace Fitnesclubplus.Controllers
                 }
                 else
                 {
+<<<<<<< HEAD
                     // Hata olursa sebebini görmek için mesajı alıyoruz
+=======
+                    // Hata olursa sebebini görelim
+>>>>>>> b404bda370f8193262e5be29c3c2603c5c8ad51b
                     var errorMsg = await response.Content.ReadAsStringAsync();
                     return Json(new { success = false, message = $"Google Hatası: {errorMsg}" });
                 }
@@ -83,9 +101,15 @@ namespace Fitnesclubplus.Controllers
             if (string.IsNullOrEmpty(aiText)) return Json(new { success = false, message = "Diyet planı oluşturulamadı (Cevap boş)." });
 
 
+<<<<<<< HEAD
             
             // ADIM 2: STABILITY MATRIX İLE GÖRSEL OLUŞTURMA
             
+=======
+            // ==================================================================================
+            // ADIM 2: STABILITY MATRIX İLE GÖRSEL OLUŞTURMA
+            // ==================================================================================
+>>>>>>> b404bda370f8193262e5be29c3c2603c5c8ad51b
             string generatedImageUrl = "";
             string imageTitle = goal.Contains("Kilo") ? "Hedeflenen Fit Görünüm" : "Hedeflenen Atletik Yapı";
             string sdBadge = "<span class='badge bg-success ms-2'>Yapay Zeka (Local)</span>";
